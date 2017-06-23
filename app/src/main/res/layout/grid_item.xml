@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pic_iv"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:background="@drawable/bg_add_photo"
+    android:scaleType="center">
+
+</ImageView>
