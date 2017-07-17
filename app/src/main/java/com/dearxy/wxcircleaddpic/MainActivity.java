@@ -57,18 +57,28 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 if (position == parent.getChildCount() - 1) {
-                    //添加凭证图片
-                    checkPhotoPermission();
+                    //如果“增加按钮形状的”图片的位置是最后一张，且添加了的图片的数量不超过5张，才能点击
+                    if (mPicList.size() == MainConstant.MAX_SELECT_PIC_NUM) {
+                        //最多添加5张图片
+                        viewPluImg(position);
+                    } else {
+                        //添加凭证图片
+                        checkPhotoPermission();
+                    }
                 } else {
-                    //查看大图
-                    Intent intent = new Intent(mContext, PlusImageActivity.class);
-                    //图片的路径
-                    intent.putExtra(MainConstant.PIC_PATH, mPicList.get(position));
-                    intent.putExtra(MainConstant.POSITION, position);
-                    startActivityForResult(intent, MainConstant.REQUEST_CODE_MAIN);
+                    viewPluImg(position);
                 }
             }
         });
+    }
+
+    //查看大图
+    private void viewPluImg(int position) {
+        Intent intent = new Intent(mContext, PlusImageActivity.class);
+        //图片的路径
+        intent.putExtra(MainConstant.PIC_PATH, mPicList.get(position));
+        intent.putExtra(MainConstant.POSITION, position);
+        startActivityForResult(intent, MainConstant.REQUEST_CODE_MAIN);
     }
 
     /**
@@ -79,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             String[] mPermissionList = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
             if (EasyPermissions.hasPermissions(mContext, mPermissionList)) {
                 //已经同意过
-                selectPic();
+                selectPic(MainConstant.MAX_SELECT_PIC_NUM - mPicList.size());
             } else {
                 //未同意过,或者说是拒绝了，再次申请权限
                 EasyPermissions.requestPermissions(
@@ -91,16 +101,20 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             }
         } else {
             //6.0以下，不需要授权
-            selectPic();
+            selectPic(MainConstant.MAX_SELECT_PIC_NUM - mPicList.size());
         }
     }
 
-    //打开相册选择凭证图片，最多5张
-    private void selectPic() {
+    /**
+     * 打开相册选择凭证图片，最多5张
+     *
+     * @param maxTotal 最多选择的图片的数量
+     */
+    private void selectPic(int maxTotal) {
         PhotoPickerIntent intent = new PhotoPickerIntent(mContext);
         intent.setSelectModel(SelectModel.MULTI);
         intent.setShowCarema(true); // 是否显示拍照， 默认false
-        intent.setMaxTotal(MainConstant.MAX_SELECT_PIC_NUM); // 最多选择照片数量，默认为9
+        intent.setMaxTotal(maxTotal); // 最多选择照片数量，默认为9
         startActivityForResult(intent, REQUEST_CAMERA_CODE);
     }
 
@@ -109,11 +123,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         for (int i = 0; i < paths.size(); i++) {
             Log.i(TAG, "path:---->" + paths.get(i));
             proofPicCount++;
-            if (proofPicCount <= MainConstant.MAX_SELECT_PIC_NUM) {
-                //添加图片到GridView
-                mPicList.add(paths.get(i));
-            }
         }
+        mPicList.addAll(paths);
         mGridViewAdapter.notifyDataSetChanged();
     }
 
@@ -121,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     @Override
     public void onPermissionsGranted(int requestCode, List<String> list) {
         Log.i(TAG, "onPermissionsGranted:" + requestCode + ":" + list.size());
-        selectPic();
+        selectPic(MainConstant.MAX_SELECT_PIC_NUM - mPicList.size());
     }
 
     //拒绝授权
@@ -141,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 case AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE:
                     //拒绝授权后，从系统设置了授权后，返回APP进行相应的操作
                     Log.i(TAG, "onPermissionsDenied:------>自定义设置授权后返回APP");
-                    selectPic();
+                    selectPic(MainConstant.MAX_SELECT_PIC_NUM - mPicList.size());
                     break;
                 // 选择照片
                 case REQUEST_CAMERA_CODE:
@@ -155,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
         if (requestCode == MainConstant.REQUEST_CODE_MAIN && resultCode == MainConstant.RESULT_CODE_PLUS_IMG) {
             //查看大图页面删除了图片
+            proofPicCount--;
             int position = data.getIntExtra(MainConstant.POSITION, 0); //要删除的图片的位置
             mPicList.remove(position);
             mGridViewAdapter.notifyDataSetChanged();
