@@ -18,12 +18,24 @@
 
             <ImageView
                 android:id="@+id/back_iv"
-                android:scaleType="centerCrop"
-                android:contentDescription="@null"
                 android:layout_width="wrap_content"
-                android:src="@mipmap/fanhui_baise"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_height="wrap_content"/>
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/back" />
+
+            <!--图片位置-->
+            <TextView
+                android:id="@+id/position_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@id/back_iv"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                tools:text="1/1" />
 
             <ImageView
                 android:id="@+id/delete_iv"
@@ -32,19 +44,18 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
-                android:scaleType="centerCrop"
                 android:contentDescription="@null"
                 android:padding="10dp"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/shanchu" />
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
-    <uk.co.senab.photoview.PhotoView
-        android:id="@+id/photoView"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </LinearLayout>

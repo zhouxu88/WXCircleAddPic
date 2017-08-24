@@ -4,6 +4,6 @@
     android:layout_width="60dp"
     android:layout_height="60dp"
     android:background="@drawable/bg_add_photo"
-    android:scaleType="center">
+    android:scaleType="centerCrop">
 
 </ImageView>

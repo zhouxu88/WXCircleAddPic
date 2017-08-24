@@ -3,8 +3,9 @@
     package="com.dearxy.wxcircleaddpic">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -14,14 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity
-            android:name="com.foamtrace.photopicker.PhotoPickerActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/PhotoPickerTheme" />
-        <activity
-            android:name="com.foamtrace.photopicker.PhotoPreviewActivity"
-            android:theme="@style/PhotoPickerTheme" />
-        
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +24,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".PlusImageActivity"></activity>
+
+        <!--解决7.0照相机崩溃问题-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

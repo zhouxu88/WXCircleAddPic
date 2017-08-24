@@ -25,21 +25,8 @@
         <!-- 遮罩层 -->
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
-
-    <style name="PhotoPickerTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="actionMenuTextAppearance">@style/ActionMenuTextStyle</item>
-        <!--<item name="actionBarTheme">@style/actionBarTheme</item>-->
-        <!--<item name="actionBarPopupTheme">@style/actionBarPopupTheme</item>-->
-    </style>
-
-    <!-- 设置ActionBar菜单字体 -->
-    <style name="ActionMenuTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
-        <item name="android:textSize">@dimen/action_text_size</item>
-        <item name="android:textStyle">normal</item>
-    </style>
+    
+    
 
     <color name="white">#ffffff</color>
 </resources>
