@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private GridView gridView;
     private ArrayList<String> mPicList = new ArrayList<>(); //上传的图片凭证的数据源
     private GridViewAdapter mGridViewAddImgAdapter; //展示上传的图片的适配器
-    private int proofPicCount; //已经选择的凭证图片的数量
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         for (LocalMedia localMedia : picList) {
             //被压缩后的图片路径
             if (localMedia.isCompressed()) {
-                proofPicCount++;
                 String compressPath = localMedia.getCompressPath(); //压缩后的图片路径
                 mPicList.add(compressPath); //把图片添加到将要上传的图片数组中
                 mGridViewAddImgAdapter.notifyDataSetChanged();
@@ -107,11 +105,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-        if (requestCode == MainConstant.REQUEST_CODE_MAIN && resultCode == MainConstant.RESULT_CODE_PLUS_IMG) {
+        if (requestCode == MainConstant.REQUEST_CODE_MAIN && resultCode == MainConstant.RESULT_CODE_VIEW_IMG) {
             //查看大图页面删除了图片
-            proofPicCount--;
-            int position = data.getIntExtra(MainConstant.POSITION, 0); //要删除的图片的位置
-            mPicList.remove(position);
+            ArrayList<String> toDeletePicList = data.getStringArrayListExtra(MainConstant.IMG_LIST); //要删除的图片的集合
+            mPicList.clear();
+            mPicList.addAll(toDeletePicList);
             mGridViewAddImgAdapter.notifyDataSetChanged();
         }
     }
